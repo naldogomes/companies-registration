@@ -17,14 +17,14 @@ import {
 } from "./styles";
 import { checkAge, validateCEP, validateCNPJ } from "../../utils/validators";
 import { SelectOptions } from "../../components/SelectOptions";
-import { Addrress, Supplier } from "../CreateSupplier";
+import { Address, Supplier } from "../CreateSupplier";
 
 export type Company = {
   id: number;
   cnpj: string;
   fantasyName: string;
   cep: string;
-  addrress?: Addrress;
+  address?: Address;
   suppliers: Array<Supplier>;
 };
 
@@ -48,7 +48,7 @@ const CreateCompany: FC = () => {
   });
 
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [address, setAddress] = useState<Addrress | null>(null);
+  const [address, setAddress] = useState<Address | null>(null);
 
   const [companies, setCompanies] = useLocalStorage<Company[]>("companies", []);
 
@@ -64,7 +64,7 @@ const CreateCompany: FC = () => {
     console.log("companies", companies);
   }, [companies]);
 
-  const handleCompanyCreation = (obj: Company, address: Addrress) => {
+  const handleCompanyCreation = (obj: Company, address: Address) => {
     const id = companies.length + 1;
     let selectedSuppliers: Supplier[] = [];
     let notAllowedSuppliers: Supplier[] = [];
@@ -94,7 +94,7 @@ const CreateCompany: FC = () => {
     if (!companyAddress) companyAddress = await verifyCEP(getValues().cep);
     const { company: newCompany, notAllowedSuppliers } = handleCompanyCreation(
       getValues(),
-      companyAddress || ({} as Addrress)
+      companyAddress || ({} as Address)
     );
     if (!notAllowedSuppliers.length)
       setCompanies((prevValue) => [...prevValue, newCompany]);

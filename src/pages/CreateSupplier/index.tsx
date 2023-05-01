@@ -15,7 +15,7 @@ import {
 } from "./styles";
 import { validateCEP, validateCNPJ, validateCPF } from "../../utils/validators";
 
-export type Addrress = {
+export type Address = {
   bairro: string;
   cep: string;
   complemento: string;
@@ -36,7 +36,7 @@ export type Supplier = {
   fantasyName?: string;
   name?: string;
   cep: string;
-  addrress?: Addrress;
+  address?: Address;
   email: string;
   rg?: string;
   birthDate?: string;
@@ -77,7 +77,7 @@ const CreateSupplier: FC = () => {
   });
 
   const [isCNPJ, setIsCNPJ] = useState(true);
-  const [address, setAddress] = useState<Addrress | null>(null);
+  const [address, setAddress] = useState<Address | null>(null);
 
   const [suppliers, setSuppliers] = useLocalStorage<Supplier[]>(
     "suppliers",
@@ -92,7 +92,7 @@ const CreateSupplier: FC = () => {
     console.log("suppliers", suppliers);
   }, [suppliers]);
 
-  const handleSupplierType = (obj: Supplier, address: Addrress) => {
+  const handleSupplierType = (obj: Supplier, address: Address) => {
     const id = suppliers.length + 1;
     const supplier = { ...obj, id, address, isCNPJ };
     if (isCNPJ) {
@@ -120,7 +120,7 @@ const CreateSupplier: FC = () => {
     if (!supplierAddress) supplierAddress = await verifyCEP(getValues().cep);
     const newSupplier = handleSupplierType(
       getValues(),
-      supplierAddress || ({} as Addrress)
+      supplierAddress || ({} as Address)
     );
     setSuppliers((prevValue) => [...prevValue, newSupplier]);
   };
