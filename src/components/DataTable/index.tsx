@@ -1,16 +1,22 @@
-import { Table, TableHeader, TableRow } from "./styles";
-import { BsTrash, BsPencil } from "react-icons/bs";
+import {
+  DeleteButton,
+  EditButton,
+  Table,
+  TableActionsRow,
+  TableHeader,
+  TableRow,
+} from "./styles";
 
 type DataTableProps = {
   headers: string[];
   data: any;
 };
 
-const handleDelete = (index: any) => {
+const handleEdit = (index: any) => {
   console.log(index);
 };
 
-const handleEdit = (index: any) => {
+const handleDelete = (index: any) => {
   console.log(index);
 };
 
@@ -22,6 +28,7 @@ const DataTable = ({ headers, data }: DataTableProps) => {
           {headers.map((header) => (
             <TableHeader key={header}>{header}</TableHeader>
           ))}
+          <TableHeader>Ações</TableHeader>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +37,22 @@ const DataTable = ({ headers, data }: DataTableProps) => {
             {Object.values(row).map((value: any, index: number) => (
               <TableRow key={index}>{value}</TableRow>
             ))}
+            <TableActionsRow key={index} width="185px">
+              <EditButton
+                onClick={() => {
+                  handleEdit(index);
+                }}
+              >
+                Editar
+              </EditButton>
+              <DeleteButton
+                onClick={() => {
+                  handleDelete(index);
+                }}
+              >
+                Deletar
+              </DeleteButton>
+            </TableActionsRow>
           </tr>
         ))}
       </tbody>
