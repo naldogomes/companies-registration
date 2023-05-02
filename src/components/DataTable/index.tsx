@@ -1,3 +1,4 @@
+import { CompanyTableData } from "../../pages/ListCompanies";
 import {
   DeleteButton,
   EditButton,
@@ -9,18 +10,19 @@ import {
 
 type DataTableProps = {
   headers: string[];
-  data: any;
+  data: CompanyTableData[];
+  handleEdit?: (index: any) => void;
+  handleDelete?: (index: any) => void;
 };
 
-const handleEdit = (index: any) => {
-  console.log(index);
-};
+const DataTable = ({
+  headers,
+  data,
+  handleEdit,
+  handleDelete,
+}: DataTableProps) => {
+  const hasEditAndDelete = handleEdit && handleDelete;
 
-const handleDelete = (index: any) => {
-  console.log(index);
-};
-
-const DataTable = ({ headers, data }: DataTableProps) => {
   return (
     <Table>
       <thead>
@@ -28,31 +30,33 @@ const DataTable = ({ headers, data }: DataTableProps) => {
           {headers.map((header) => (
             <TableHeader key={header}>{header}</TableHeader>
           ))}
-          <TableHeader>Ações</TableHeader>
+          {hasEditAndDelete && <TableHeader>Ações</TableHeader>}
         </tr>
       </thead>
       <tbody>
-        {data.map((row: any, index: number) => (
+        {data.map((row, index) => (
           <tr key={index}>
-            {Object.values(row).map((value: any, index: number) => (
+            {Object.values(row).map((value, index) => (
               <TableRow key={index}>{value}</TableRow>
             ))}
-            <TableActionsRow key={index} width="185px">
-              <EditButton
-                onClick={() => {
-                  handleEdit(index);
-                }}
-              >
-                Editar
-              </EditButton>
-              <DeleteButton
-                onClick={() => {
-                  handleDelete(index);
-                }}
-              >
-                Deletar
-              </DeleteButton>
-            </TableActionsRow>
+            {hasEditAndDelete && (
+              <TableActionsRow key={index} width="185px">
+                <EditButton
+                  onClick={() => {
+                    handleEdit(index);
+                  }}
+                >
+                  Editar
+                </EditButton>
+                <DeleteButton
+                  onClick={() => {
+                    handleDelete(index);
+                  }}
+                >
+                  Deletar
+                </DeleteButton>
+              </TableActionsRow>
+            )}
           </tr>
         ))}
       </tbody>

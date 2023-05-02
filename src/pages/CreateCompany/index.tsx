@@ -18,6 +18,7 @@ import {
 import { checkAge, validateCEP, validateCNPJ } from "../../utils/validators";
 import { SelectOptions } from "../../components/SelectOptions";
 import { Address, Supplier } from "../CreateSupplier";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export type Company = {
   id: number;
@@ -47,6 +48,13 @@ const CreateCompany: FC = () => {
     defaultValues: defaultValues,
   });
 
+  const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const { companyToEdit, index } = state || {};
+
+  const isEdit = !!companyToEdit?.id;
+
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [address, setAddress] = useState<Address | null>(null);
 
@@ -56,16 +64,39 @@ const CreateCompany: FC = () => {
     setSuppliers(JSON.parse(localStorage.getItem("suppliers") || "[]"));
   }, []);
 
+  const verifyCEP = async (cep: string) => {
+    const response = await validateCEP(cep);
+    if (response !== "CEP inválido") setAddress(response);
+
+    return response;
+  };
+
+  const options = suppliers?.map((supplier) => ({
+    id: supplier.id,
+    value: supplier.id,
+    label: supplier.cnpj ? supplier.fantasyName : supplier.name,
+  }));
+
+  useEffect(() => {
+    if (isEdit) {
+      console.log(companyToEdit);
+      setValue("cnpj", companyToEdit.cnpj);
+      setValue("fantasyName", companyToEdit.fantasyName);
+      setValue("cep", companyToEdit.cep);
+      verifyCEP(companyToEdit.cep);
+    }
+  }, []);
+
   // useEffect(() => {
   //   setCompanies([]);
   // }, []);
 
-  useEffect(() => {
-    console.log("companies", companies);
-  }, [companies]);
+  // useEffect(() => {
+  //   console.log("companies", companies);
+  // }, [companies]);
 
   const handleCompanyCreation = (obj: Company, address: Address) => {
-    const id = companies.length + 1;
+    const id = isEdit ? companies[index]?.id : companies.length + 1;
     let selectedSuppliers: Supplier[] = [];
     let notAllowedSuppliers: Supplier[] = [];
     obj.suppliers.forEach((item) => {
@@ -82,13 +113,6 @@ const CreateCompany: FC = () => {
     return { company, notAllowedSuppliers };
   };
 
-  const verifyCEP = async (cep: string) => {
-    const response = await validateCEP(cep);
-    if (response !== "CEP inválido") setAddress(response);
-
-    return response;
-  };
-
   const onSubmit = async () => {
     let companyAddress = address;
     if (!companyAddress) companyAddress = await verifyCEP(getValues().cep);
@@ -96,18 +120,20 @@ const CreateCompany: FC = () => {
       getValues(),
       companyAddress || ({} as Address)
     );
-    if (!notAllowedSuppliers.length)
-      setCompanies((prevValue) => [...prevValue, newCompany]);
-    else {
+    if (!notAllowedSuppliers.length) {
+      if (isEdit) {
+        let newCompanies = companies;
+        newCompanies[index] = newCompany;
+        setCompanies(newCompanies);
+        navigate("/companies-list");
+      } else {
+        setCompanies((prevValue) => [...prevValue, newCompany]);
+        navigate("/companies-list");
+      }
+    } else {
       console.log("erro", notAllowedSuppliers);
     }
   };
-
-  const options = suppliers?.map((supplier) => ({
-    id: supplier.id,
-    value: supplier.id,
-    label: supplier.cnpj ? supplier.fantasyName : supplier.name,
-  }));
 
   return (
     <Container>

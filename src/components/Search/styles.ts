@@ -16,6 +16,7 @@ export const SearchInput = styled.input`
   border: none;
   outline: none;
   padding: 0.5rem;
+  font-size: 16px;
 `;
 
 export const SearchIcon = styled(FaSearch)`
