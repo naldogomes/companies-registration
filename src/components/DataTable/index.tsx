@@ -1,4 +1,5 @@
 import { CompanyTableData } from "../../pages/ListCompanies";
+import { SupplierTableData } from "../../pages/ListSuppliers";
 import {
   DeleteButton,
   EditButton,
@@ -10,7 +11,7 @@ import {
 
 type DataTableProps = {
   headers: string[];
-  data: CompanyTableData[];
+  data: CompanyTableData[] | SupplierTableData[];
   handleEdit?: (index: any) => void;
   handleDelete?: (index: any) => void;
 };

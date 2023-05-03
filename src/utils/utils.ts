@@ -1,9 +1,4 @@
-import { CompanyTableData } from "../pages/ListCompanies";
-
-export const searchItem = (
-  arr: CompanyTableData[],
-  searchTerm: string
-): CompanyTableData[] => {
+export const searchItem = (arr: any[], searchTerm: string): any[] => {
   const filteredArr = arr.filter((item) =>
     Object.values(item).some((val) =>
       String(val)

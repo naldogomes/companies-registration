@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Spinner from "../Spinner";
 import {
   Button,
   ButtonsContainer,
@@ -22,6 +24,8 @@ const ConfirmationModal = ({
   onClose,
   onConfirm,
 }: ConfirmationModalProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   if (!show) {
     return <></>;
   }
@@ -32,9 +36,21 @@ const ConfirmationModal = ({
         <Title>{title}</Title>
         <Description>{description}</Description>
         <ButtonsContainer>
-          <Button onClick={onClose}>Não</Button>
-          <Button onClick={onConfirm} isWarned>
-            Sim
+          <Button onClick={onClose} disabled={isLoading}>
+            Não
+          </Button>
+          <Button
+            disabled={isLoading}
+            onClick={() => {
+              setIsLoading(true);
+              setTimeout(() => {
+                setIsLoading(false);
+                onConfirm();
+              }, 2000);
+            }}
+            isWarned
+          >
+            {isLoading ? <Spinner size="12px" color="#f08080" /> : "Sim"}
           </Button>
         </ButtonsContainer>
       </ModalContainer>

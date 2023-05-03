@@ -19,6 +19,7 @@ import { checkAge, validateCEP, validateCNPJ } from "../../utils/validators";
 import { SelectOptions } from "../../components/SelectOptions";
 import { Address, Supplier } from "../CreateSupplier";
 import { useLocation, useNavigate } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 export type Company = {
   id: number;
@@ -57,6 +58,7 @@ const CreateCompany: FC = () => {
 
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [address, setAddress] = useState<Address | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [companies, setCompanies] = useLocalStorage<Company[]>("companies", []);
 
@@ -120,19 +122,23 @@ const CreateCompany: FC = () => {
       getValues(),
       companyAddress || ({} as Address)
     );
-    if (!notAllowedSuppliers.length) {
-      if (isEdit) {
-        let newCompanies = companies;
-        newCompanies[index] = newCompany;
-        setCompanies(newCompanies);
+    setIsLoading(true);
+    setTimeout(() => {
+      if (!notAllowedSuppliers.length) {
+        if (isEdit) {
+          let newCompanies = companies;
+          newCompanies[index] = newCompany;
+          setCompanies(newCompanies);
+        } else {
+          setCompanies((prevValue) => [...prevValue, newCompany]);
+        }
+        setIsLoading(false);
         navigate("/companies-list");
       } else {
-        setCompanies((prevValue) => [...prevValue, newCompany]);
-        navigate("/companies-list");
+        setIsLoading(false);
+        console.log("erro", notAllowedSuppliers);
       }
-    } else {
-      console.log("erro", notAllowedSuppliers);
-    }
+    }, 2000);
   };
 
   return (
@@ -140,7 +146,7 @@ const CreateCompany: FC = () => {
       <FormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <InputsContainer>
-            <Title>Cadastrar empresa</Title>
+            <Title>{`${isEdit ? "Editar" : "Cadastrar"} Empresa`}</Title>
             <InputDiv isEmpty={errors?.cnpj?.type === "required"}>
               <label>
                 CNPJ
@@ -253,7 +259,9 @@ const CreateCompany: FC = () => {
               </SelectContainer>
             </InputDiv>
           </InputsContainer>
-          <ButtonSubmit type="submit">Continuar</ButtonSubmit>
+          <ButtonSubmit type="submit" disabled={isLoading}>
+            {isLoading ? <Spinner /> : "Salvar"}
+          </ButtonSubmit>
         </Form>
       </FormContainer>
     </Container>

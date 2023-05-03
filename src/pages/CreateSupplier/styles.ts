@@ -20,6 +20,7 @@ export const FormContainer = styled.div`
   padding: 20px;
   flex-direction: column;
   border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `;
 
 export const Form = styled.form`
@@ -111,90 +112,10 @@ export const InputsRow = styled.div`
   justify-content: space-between;
 `;
 
-export const SelectContainer = styled.div<{ isEmpty?: boolean }>`
-  width: 100%;
-  position: relative;
-  gap: 8px;
-  display: flex;
-  flex-direction: column;
-  input {
-    width: 20px;
-    height: 20px;
-  }
-  small {
-    position: absolute;
-    left: 0;
-    bottom: -25px;
-    color: #e22828;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-`;
-
-export const customStyles = {
-  option: () => ({
-    padding: "12px 16px",
-    background: "#ffffff",
-    color: "#4d4d4d",
-    gap: "8px",
-
-    "&:hover": {
-      background: "#f2f2f2",
-    },
-  }),
-  control: (defaultStyles: any) => ({
-    ...defaultStyles,
-    backgroundColor: "#ffffff",
-    border: "1px solid #cccccc",
-    color: "#4d4d4d",
-    boxShadow: "none",
-    padding: "0px 5px 0px 17px !important",
-    borderRadius: "8px",
-    minHeight: "48px",
-
-    "&:hover": {
-      boxShadow: "none",
-    },
-  }),
-
-  menu: (defaultStyles: any) => ({
-    ...defaultStyles,
-    color: "#fff",
-    marginTop: "0px",
-    maxWidth: "540px",
-    width: "100%",
-  }),
-  singleValue: (defaultStyles: any) => ({
-    ...defaultStyles,
-    color: "#666666",
-    width: "100%",
-  }),
-  placeholder: (defaultStyles: any) => ({
-    ...defaultStyles,
-    color: "#cccccc",
-  }),
-
-  indicatorSeparator: (defaultStyles: any) => ({
-    ...defaultStyles,
-    display: "none",
-  }),
-
-  valueContainer: (defaultStyles: any) => ({
-    ...defaultStyles,
-    padding: "0px",
-    span: {
-      display: "none",
-      ":first-of-type": {
-        display: "flex",
-      },
-    },
-  }),
-};
-
 export const ButtonSubmit = styled.button`
-  padding: 16px 24px;
+  padding: 0 24px;
   background: #146c94;
+  height: 50px;
   border-radius: 8px;
   color: #ffffff;
   font-weight: 600;

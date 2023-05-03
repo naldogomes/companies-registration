@@ -14,6 +14,8 @@ import {
   Title,
 } from "./styles";
 import { validateCEP, validateCNPJ, validateCPF } from "../../utils/validators";
+import { useLocation, useNavigate } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 export type Address = {
   bairro: string;
@@ -76,8 +78,16 @@ const CreateSupplier: FC = () => {
     defaultValues: defaultValues,
   });
 
-  const [isCNPJ, setIsCNPJ] = useState(true);
+  const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const { supplierToEdit, index } = state || {};
+
+  const isEdit = !!supplierToEdit?.id;
+
+  const [isCNPJ, setIsCNPJ] = useState(isEdit ? supplierToEdit.isCNPJ : true);
   const [address, setAddress] = useState<Address | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [suppliers, setSuppliers] = useLocalStorage<Supplier[]>(
     "suppliers",
@@ -85,15 +95,36 @@ const CreateSupplier: FC = () => {
   );
 
   // useEffect(() => {
-  //   setSuppliers([]);
-  // }, []);
+  //   console.log("suppliers", suppliers);
+  // }, [suppliers]);
+
+  const verifyCEP = async (cep: string) => {
+    const response = await validateCEP(cep);
+    if (response !== "CEP inválido") setAddress(response);
+
+    return response;
+  };
 
   useEffect(() => {
-    console.log("suppliers", suppliers);
-  }, [suppliers]);
+    if (isEdit) {
+      console.log(supplierToEdit);
+      if (supplierToEdit.isCNPJ) {
+        setValue("cnpj", supplierToEdit.cnpj);
+        setValue("fantasyName", supplierToEdit.fantasyName);
+      } else {
+        setValue("cpf", supplierToEdit.cpf);
+        setValue("name", supplierToEdit.name);
+        setValue("rg", supplierToEdit.rg);
+        setValue("birthDate", supplierToEdit.birthDate);
+      }
+      setValue("email", supplierToEdit.email);
+      setValue("cep", supplierToEdit.cep);
+      verifyCEP(supplierToEdit.cep);
+    }
+  }, []);
 
   const handleSupplierType = (obj: Supplier, address: Address) => {
-    const id = suppliers.length + 1;
+    const id = isEdit ? suppliers[index]?.id : suppliers.length + 1;
     const supplier = { ...obj, id, address, isCNPJ };
     if (isCNPJ) {
       delete supplier.cpf;
@@ -108,13 +139,6 @@ const CreateSupplier: FC = () => {
     return supplier;
   };
 
-  const verifyCEP = async (cep: string) => {
-    const response = await validateCEP(cep);
-    if (response !== "CEP inválido") setAddress(response);
-
-    return response;
-  };
-
   const onSubmit = async () => {
     let supplierAddress = address;
     if (!supplierAddress) supplierAddress = await verifyCEP(getValues().cep);
@@ -122,7 +146,18 @@ const CreateSupplier: FC = () => {
       getValues(),
       supplierAddress || ({} as Address)
     );
-    setSuppliers((prevValue) => [...prevValue, newSupplier]);
+    setIsLoading(true);
+    setTimeout(() => {
+      if (isEdit) {
+        let newSuppliers = suppliers;
+        newSuppliers[index] = newSupplier;
+        setSuppliers(newSuppliers);
+      } else {
+        setSuppliers((prevValue) => [...prevValue, newSupplier]);
+      }
+      setIsLoading(false);
+      navigate("/suppliers-list");
+    }, 2000);
   };
 
   return (
@@ -130,31 +165,35 @@ const CreateSupplier: FC = () => {
       <FormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <InputsContainer>
-            <Title>Cadastrar fornecedor</Title>
-            <RadioDiv>
+            <Title>{`${isEdit ? "Editar" : "Cadastrar"} Fornecedor`}</Title>
+            {!isEdit && (
               <RadioDiv>
-                <span>Pessoa jurídica</span>
-                <input
-                  type="radio"
-                  value="pj"
-                  checked={isCNPJ}
-                  onClick={() => {
-                    setIsCNPJ(true);
-                  }}
-                />
+                <RadioDiv>
+                  <span>Pessoa jurídica</span>
+                  <input
+                    type="radio"
+                    value="pj"
+                    checked={isCNPJ}
+                    onClick={() => {
+                      setIsCNPJ(true);
+                    }}
+                    onChange={() => {}}
+                  />
+                </RadioDiv>
+                <RadioDiv>
+                  <span>Pessoa física</span>
+                  <input
+                    type="radio"
+                    value="pf"
+                    checked={!isCNPJ}
+                    onClick={() => {
+                      setIsCNPJ(false);
+                    }}
+                    onChange={() => {}}
+                  />
+                </RadioDiv>
               </RadioDiv>
-              <RadioDiv>
-                <span>Pessoa física</span>
-                <input
-                  type="radio"
-                  value="pf"
-                  checked={!isCNPJ}
-                  onClick={() => {
-                    setIsCNPJ(false);
-                  }}
-                />
-              </RadioDiv>
-            </RadioDiv>
+            )}
 
             {isCNPJ ? (
               <>
@@ -396,7 +435,9 @@ const CreateSupplier: FC = () => {
               </>
             )}
           </InputsContainer>
-          <ButtonSubmit type="submit">Continuar</ButtonSubmit>
+          <ButtonSubmit type="submit" disabled={isLoading}>
+            {isLoading ? <Spinner /> : "Salvar"}
+          </ButtonSubmit>
         </Form>
       </FormContainer>
     </Container>

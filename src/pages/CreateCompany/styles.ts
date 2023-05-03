@@ -20,6 +20,7 @@ export const FormContainer = styled.div`
   padding: 20px;
   flex-direction: column;
   border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `;
 
 export const Form = styled.form`
@@ -122,14 +123,13 @@ export const SelectContainer = styled.div<{ isEmpty?: boolean }>`
   }
 `;
 export const ButtonSubmit = styled.button`
-  padding: 16px 24px;
-  gap: 8px;
+  padding: 0 24px;
   background: #146c94;
+  height: 50px;
   border-radius: 8px;
   color: #ffffff;
   font-weight: 600;
   font-size: 16px;
-  line-height: 100%;
   margin-top: 40px;
   :hover {
     cursor: pointer;
