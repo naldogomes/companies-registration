@@ -20,6 +20,7 @@ import { SelectOptions } from "../../components/SelectOptions";
 import { Address, Supplier } from "../CreateSupplier";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
+import HeaderMenu from "../../components/HeaderMenu";
 
 export type Company = {
   id: number;
@@ -142,129 +143,132 @@ const CreateCompany: FC = () => {
   };
 
   return (
-    <Container>
-      <FormContainer>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <InputsContainer>
-            <Title>{`${isEdit ? "Editar" : "Cadastrar"} Empresa`}</Title>
-            <InputDiv isEmpty={errors?.cnpj?.type === "required"}>
-              <label>
-                CNPJ
-                <InputMask
-                  mask="99.999.999/9999-99"
-                  type="text"
-                  placeholder="00.000.000/0000-00"
-                  {...register("cnpj", {
-                    required: "Campo obrigatório",
-                    validate: validateCNPJ,
-                  })}
-                />
-                {errors?.cnpj && (
-                  <small className="error-message">
-                    {errors?.cnpj?.message}
-                  </small>
-                )}
-              </label>
-            </InputDiv>
-            <InputDiv isEmpty={false}>
-              <label>
-                Nome fantasia
-                <input
-                  {...register("fantasyName", {
-                    required: "Campo obrigatório",
-                  })}
-                  placeholder="Nome fantasia"
-                />
-                {errors?.fantasyName && (
-                  <small className="error-message">
-                    {errors?.fantasyName?.message}
-                  </small>
-                )}
-              </label>
-            </InputDiv>
-            <InputsRow>
-              <InputDiv isEmpty={false} width={"120px"}>
+    <>
+      <HeaderMenu currentPage="company-form" />
+      <Container>
+        <FormContainer>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <InputsContainer>
+              <Title>{`${isEdit ? "Editar" : "Cadastrar"} Empresa`}</Title>
+              <InputDiv isEmpty={errors?.cnpj?.type === "required"}>
                 <label>
-                  CEP
+                  CNPJ
                   <InputMask
-                    mask="99999-999"
+                    mask="99.999.999/9999-99"
                     type="text"
-                    placeholder="00000-00"
-                    {...register("cep", {
+                    placeholder="00.000.000/0000-00"
+                    {...register("cnpj", {
                       required: "Campo obrigatório",
-                      validate: verifyCEP,
+                      validate: validateCNPJ,
                     })}
-                    onBlur={(e) => {
-                      verifyCEP(e.target.value);
-                    }}
                   />
-                  {errors?.cep && (
+                  {errors?.cnpj && (
                     <small className="error-message">
-                      {errors?.cep?.message}
+                      {errors?.cnpj?.message}
                     </small>
                   )}
                 </label>
               </InputDiv>
-              <InputDiv isEmpty={false} width={"60px"} isDisabled>
+              <InputDiv isEmpty={false}>
                 <label>
-                  UF
+                  Nome fantasia
                   <input
-                    value={address?.uf}
-                    type="text"
-                    placeholder="UF"
-                    disabled
+                    {...register("fantasyName", {
+                      required: "Campo obrigatório",
+                    })}
+                    placeholder="Nome fantasia"
                   />
-                </label>
-              </InputDiv>
-              <InputDiv isEmpty={false} isDisabled>
-                <label>
-                  Cidade
-                  <input
-                    value={address?.localidade}
-                    type="text"
-                    placeholder="Cidade"
-                    disabled
-                  />
-                </label>
-              </InputDiv>
-            </InputsRow>
-            <InputDiv>
-              <SelectContainer>
-                <label>Fornecedores (opcional)</label>
-
-                <Controller
-                  name="suppliers"
-                  control={control}
-                  render={({ field: { onChange, value, ref } }) => (
-                    <Select
-                      options={options}
-                      onChange={(val: any) => {
-                        onChange(val);
-                      }}
-                      value={options.find((c: any) => c.value === value)}
-                      components={{
-                        Option: SelectOptions,
-                      }}
-                      isMulti
-                      isSearchable
-                      placeholder="Selecione os atributos"
-                      closeMenuOnSelect={false}
-                      hideSelectedOptions={false}
-                      styles={customStyles}
-                      isClearable={false}
-                      noOptionsMessage={() => "Nenhum fornecedor encontrado"}
-                    />
+                  {errors?.fantasyName && (
+                    <small className="error-message">
+                      {errors?.fantasyName?.message}
+                    </small>
                   )}
-                />
-              </SelectContainer>
-            </InputDiv>
-          </InputsContainer>
-          <ButtonSubmit type="submit" disabled={isLoading}>
-            {isLoading ? <Spinner /> : "Salvar"}
-          </ButtonSubmit>
-        </Form>
-      </FormContainer>
-    </Container>
+                </label>
+              </InputDiv>
+              <InputsRow>
+                <InputDiv isEmpty={false} width={"120px"}>
+                  <label>
+                    CEP
+                    <InputMask
+                      mask="99999-999"
+                      type="text"
+                      placeholder="00000-00"
+                      {...register("cep", {
+                        required: "Campo obrigatório",
+                        validate: verifyCEP,
+                      })}
+                      onBlur={(e) => {
+                        verifyCEP(e.target.value);
+                      }}
+                    />
+                    {errors?.cep && (
+                      <small className="error-message">
+                        {errors?.cep?.message}
+                      </small>
+                    )}
+                  </label>
+                </InputDiv>
+                <InputDiv isEmpty={false} width={"60px"} isDisabled>
+                  <label>
+                    UF
+                    <input
+                      value={address?.uf}
+                      type="text"
+                      placeholder="UF"
+                      disabled
+                    />
+                  </label>
+                </InputDiv>
+                <InputDiv isEmpty={false} isDisabled>
+                  <label>
+                    Cidade
+                    <input
+                      value={address?.localidade}
+                      type="text"
+                      placeholder="Cidade"
+                      disabled
+                    />
+                  </label>
+                </InputDiv>
+              </InputsRow>
+              <InputDiv>
+                <SelectContainer>
+                  <label>Fornecedores (opcional)</label>
+
+                  <Controller
+                    name="suppliers"
+                    control={control}
+                    render={({ field: { onChange, value, ref } }) => (
+                      <Select
+                        options={options}
+                        onChange={(val: any) => {
+                          onChange(val);
+                        }}
+                        value={options.find((c: any) => c.value === value)}
+                        components={{
+                          Option: SelectOptions,
+                        }}
+                        isMulti
+                        isSearchable
+                        placeholder="Selecione os atributos"
+                        closeMenuOnSelect={false}
+                        hideSelectedOptions={false}
+                        styles={customStyles}
+                        isClearable={false}
+                        noOptionsMessage={() => "Nenhum fornecedor encontrado"}
+                      />
+                    )}
+                  />
+                </SelectContainer>
+              </InputDiv>
+            </InputsContainer>
+            <ButtonSubmit type="submit" disabled={isLoading}>
+              {isLoading ? <Spinner /> : "Salvar"}
+            </ButtonSubmit>
+          </Form>
+        </FormContainer>
+      </Container>
+    </>
   );
 };
 

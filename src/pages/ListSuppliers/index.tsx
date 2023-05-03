@@ -7,6 +7,7 @@ import { searchItem } from "../../utils/utils";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 import { suppliersMock } from "./suppliers.mock";
+import HeaderMenu from "../../components/HeaderMenu";
 
 export type SupplierTableData = {
   type: string;
@@ -85,6 +86,7 @@ const ListSuppliers = () => {
 
   return (
     <>
+      <HeaderMenu currentPage="suppliers-list" />
       <ConfirmationModal
         show={indexToDelete !== null}
         title="Tem certeza que deseja excluir o fornecedor selecionado?"

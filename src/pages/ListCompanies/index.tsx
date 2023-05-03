@@ -7,6 +7,7 @@ import { searchItem } from "../../utils/utils";
 import { companyMocks } from "./companies.mock";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
+import HeaderMenu from "../../components/HeaderMenu";
 
 export type CompanyTableData = {
   CNPJ: string;
@@ -72,6 +73,7 @@ const ListCompanies = () => {
 
   return (
     <>
+      <HeaderMenu currentPage="companies-list" />
       <ConfirmationModal
         show={indexToDelete !== null}
         title="Tem certeza que deseja excluir a empresa selecionada?"
