@@ -17,6 +17,7 @@ import { validateCEP, validateCNPJ, validateCPF } from "../../utils/validators";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import HeaderMenu from "../../components/HeaderMenu";
+import { toast } from "react-toastify";
 
 export type Address = {
   bairro: string;
@@ -125,7 +126,7 @@ const CreateSupplier: FC = () => {
   }, []);
 
   const handleSupplierType = (obj: Supplier, address: Address) => {
-    const id = isEdit ? suppliers[index]?.id : suppliers.length + 1;
+    const id = isEdit ? supplierToEdit?.id : suppliers.length + 1;
     const supplier = { ...obj, id, address, isCNPJ };
     if (isCNPJ) {
       delete supplier.cpf;
@@ -153,8 +154,14 @@ const CreateSupplier: FC = () => {
         let newSuppliers = suppliers;
         newSuppliers[index] = newSupplier;
         setSuppliers(newSuppliers);
+        toast.success("Fornecedor editado com sucesso!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       } else {
         setSuppliers((prevValue) => [...prevValue, newSupplier]);
+        toast.success("Fornecedor cadastrado com sucesso!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
       setIsLoading(false);
       navigate("/suppliers-list");

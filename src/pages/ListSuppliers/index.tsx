@@ -8,6 +8,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 import { suppliersMock } from "./suppliers.mock";
 import HeaderMenu from "../../components/HeaderMenu";
+import { toast } from "react-toastify";
 
 export type SupplierTableData = {
   type: string;
@@ -16,6 +17,7 @@ export type SupplierTableData = {
   cep: string;
   uf: string;
   city: string;
+  email: string;
 };
 
 const ListSuppliers = () => {
@@ -36,6 +38,7 @@ const ListSuppliers = () => {
     "CEP",
     "UF",
     "Cidade",
+    "Email",
   ];
 
   useEffect(() => {
@@ -53,6 +56,7 @@ const ListSuppliers = () => {
         cep: item.cep,
         uf: item.address?.uf || "",
         city: item.address?.localidade || "",
+        email: item.email,
       });
     });
     setAllData(tableData);
@@ -70,6 +74,9 @@ const ListSuppliers = () => {
 
     setIndexToDelete(null);
     localStorage.setItem("suppliers", JSON.stringify(suppliers));
+    toast.success("Fornecedor deletado com sucesso!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
     setCurrentSuppliers(suppliers);
   };
 

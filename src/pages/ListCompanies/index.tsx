@@ -8,6 +8,7 @@ import { companyMocks } from "./companies.mock";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 import HeaderMenu from "../../components/HeaderMenu";
+import { toast } from "react-toastify";
 
 export type CompanyTableData = {
   CNPJ: string;
@@ -61,6 +62,9 @@ const ListCompanies = () => {
 
     setIndexToDelete(null);
     localStorage.setItem("companies", JSON.stringify(companies));
+    toast.success("Empresa deletada com sucesso!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
     setCurrentCompanies(companies);
   };
 

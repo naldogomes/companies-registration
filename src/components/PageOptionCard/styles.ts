@@ -9,10 +9,11 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  border: 1px solid transparent;
   cursor: pointer;
   margin-left: 10px;
   &:hover {
-    border: 1px solid gray;
+    border-color: #c0c0c0;
   }
 `;
 

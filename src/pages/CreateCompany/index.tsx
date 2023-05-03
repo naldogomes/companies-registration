@@ -21,6 +21,7 @@ import { Address, Supplier } from "../CreateSupplier";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import HeaderMenu from "../../components/HeaderMenu";
+import { toast } from "react-toastify";
 
 export type Company = {
   id: number;
@@ -99,7 +100,7 @@ const CreateCompany: FC = () => {
   // }, [companies]);
 
   const handleCompanyCreation = (obj: Company, address: Address) => {
-    const id = isEdit ? companies[index]?.id : companies.length + 1;
+    const id = isEdit ? companyToEdit?.id : companies.length + 1;
     let selectedSuppliers: Supplier[] = [];
     let notAllowedSuppliers: Supplier[] = [];
     obj.suppliers.forEach((item) => {
@@ -130,13 +131,25 @@ const CreateCompany: FC = () => {
           let newCompanies = companies;
           newCompanies[index] = newCompany;
           setCompanies(newCompanies);
+          toast.success("Empresa editada com sucesso!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
         } else {
           setCompanies((prevValue) => [...prevValue, newCompany]);
+          toast.success("Empresa cadastrada com sucesso!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
         }
         setIsLoading(false);
         navigate("/companies-list");
       } else {
         setIsLoading(false);
+        toast.error(
+          "Empresas do Paraná não podem cadastrar fornecedor pessoa física menor de idade!",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        );
         console.log("erro", notAllowedSuppliers);
       }
     }, 2000);

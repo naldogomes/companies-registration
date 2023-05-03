@@ -109,16 +109,22 @@ export const validateCEP = async (value: string) => {
   }
 };
 
-export const checkAge = (sypplierBirthDate: string) => {
+export const checkAge = (supplierBirthDate: string) => {
+  const supplierBirthDateArr = supplierBirthDate.split("/");
+  const supplierBirthYear = supplierBirthDateArr[2];
+  const supplierBirthMonth = supplierBirthDateArr[1];
+  const supplierBirthDay = supplierBirthDateArr[0];
   const today = new Date();
-  const birthDate = new Date(sypplierBirthDate);
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const months = today.getMonth() - birthDate.getMonth();
-  if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
+  let age = today.getFullYear() - Number(supplierBirthYear);
+  const months = today.getMonth() + 1 - Number(supplierBirthMonth);
+  if (
+    months < 0 ||
+    (months === 0 && today.getDate() < Number(supplierBirthDay))
+  ) {
     age--;
   }
   const hasCompleted18Years =
-    age > 18 ||
-    (age === 18 && months === 0 && today.getDate() >= birthDate.getDate());
+    age >= 18 ||
+    (age === 18 && months === 0 && today.getDate() >= Number(supplierBirthDay));
   return hasCompleted18Years;
 };
