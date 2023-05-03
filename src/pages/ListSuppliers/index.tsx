@@ -6,7 +6,6 @@ import Search from "../../components/Search";
 import { searchItem } from "../../utils/utils";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
-import { suppliersMock } from "./suppliers.mock";
 import HeaderMenu from "../../components/HeaderMenu";
 import { toast } from "react-toastify";
 
@@ -79,17 +78,6 @@ const ListSuppliers = () => {
     });
     setCurrentSuppliers(suppliers);
   };
-
-  // useEffect(() => {
-  //   console.log(currentSuppliers);
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem(
-  //     "suppliers",
-  //     JSON.stringify([...suppliersMock, ...suppliersMock, ...suppliersMock])
-  //   );
-  // }, []);
 
   return (
     <>

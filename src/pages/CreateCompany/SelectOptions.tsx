@@ -37,6 +37,7 @@ export const SelectOptions = ({
       innerProps={props}
     >
       <input
+        data-testid="select-input"
         type="checkbox"
         checked={isSelected}
         onChange={() => {

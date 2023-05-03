@@ -9,7 +9,7 @@ import {
   Title,
 } from "./styles";
 
-type ConfirmationModalProps = {
+export type ConfirmationModalProps = {
   show: boolean;
   title: string;
   description: string;

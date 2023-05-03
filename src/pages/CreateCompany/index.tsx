@@ -16,12 +16,12 @@ import {
   customStyles,
 } from "./styles";
 import { checkAge, validateCEP, validateCNPJ } from "../../utils/validators";
-import { SelectOptions } from "../../components/SelectOptions";
 import { Address, Supplier } from "../CreateSupplier";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import HeaderMenu from "../../components/HeaderMenu";
 import { toast } from "react-toastify";
+import { SelectOptions } from "./SelectOptions";
 
 export type Company = {
   id: number;

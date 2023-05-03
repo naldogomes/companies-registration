@@ -9,7 +9,7 @@ const Search = ({ label, ...rest }: SearchInputProps) => {
   return (
     <SearchContainer>
       <SearchIcon />
-      <SearchInput type="search" {...rest} />
+      <SearchInput type="search" {...rest} data-testid="search-input" />
     </SearchContainer>
   );
 };

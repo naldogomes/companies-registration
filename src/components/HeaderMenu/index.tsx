@@ -39,7 +39,11 @@ const HeaderMenu = ({ currentPage }: HeaderMenuProps) => {
           <MenuItem href="/companies-list">Empresas</MenuItem>
         )}
       </Menu>
-      <MenuButton onClick={handleMenuButtonClick} isOpen={isOpen}>
+      <MenuButton
+        onClick={handleMenuButtonClick}
+        isOpen={isOpen}
+        data-testid="menu-button"
+      >
         <Icon />
       </MenuButton>
     </MenuHeaderContainer>

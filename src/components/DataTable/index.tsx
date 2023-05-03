@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "./styles";
 
-type DataTableProps = {
+export type DataTableProps = {
   headers: string[];
   data: CompanyTableData[] | SupplierTableData[];
   handleEdit?: (index: any) => void;

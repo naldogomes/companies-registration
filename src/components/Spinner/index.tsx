@@ -1,5 +1,3 @@
-import React from "react";
-import styled from "styled-components";
 import { StyledSpinner } from "./styles";
 
 export type SpinnerProps = {
@@ -8,8 +6,14 @@ export type SpinnerProps = {
 };
 
 const Spinner = ({ size, color }: SpinnerProps) => (
-  <StyledSpinner viewBox="0 0 50 50" size={size} color={color}>
+  <StyledSpinner
+    viewBox="0 0 50 50"
+    size={size}
+    color={color}
+    data-testid="spinner"
+  >
     <circle
+      data-testid="circle"
       className="path"
       cx="25"
       cy="25"

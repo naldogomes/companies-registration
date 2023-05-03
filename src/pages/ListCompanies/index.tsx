@@ -4,7 +4,6 @@ import { Company } from "../CreateCompany";
 import { Container, Title } from "./styles";
 import Search from "../../components/Search";
 import { searchItem } from "../../utils/utils";
-import { companyMocks } from "./companies.mock";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 import HeaderMenu from "../../components/HeaderMenu";
@@ -67,13 +66,6 @@ const ListCompanies = () => {
     });
     setCurrentCompanies(companies);
   };
-
-  // useEffect(() => {
-  //   localStorage.setItem(
-  //     "companies",
-  //     JSON.stringify([...companyMocks, ...companyMocks, ...companyMocks])
-  //   );
-  // }, []);
 
   return (
     <>

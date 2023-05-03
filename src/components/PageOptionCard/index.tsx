@@ -9,9 +9,9 @@ export type PageOptionCardProps = {
 
 const PageOptionCard = ({ title, Icon, onClick }: PageOptionCardProps) => {
   return (
-    <Container onClick={onClick}>
-      <Icon />
-      <Title>{title}</Title>
+    <Container onClick={onClick} data-testid="card">
+      <Icon data-testid="card-icon" />
+      <Title data-testid="card-text">{title}</Title>
     </Container>
   );
 };
