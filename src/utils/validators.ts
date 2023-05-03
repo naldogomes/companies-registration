@@ -109,6 +109,18 @@ export const validateCEP = async (value: string) => {
   }
 };
 
+export function validateEmail(email: string) {
+  if (
+    /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+      email
+    )
+  ) {
+    return true;
+  }
+
+  return "Email inválido";
+}
+
 export const checkAge = (supplierBirthDate: string) => {
   const supplierBirthDateArr = supplierBirthDate.split("/");
   const supplierBirthYear = supplierBirthDateArr[2];

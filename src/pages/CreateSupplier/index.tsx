@@ -13,7 +13,12 @@ import {
   RadioDiv,
   Title,
 } from "./styles";
-import { validateCEP, validateCNPJ, validateCPF } from "../../utils/validators";
+import {
+  validateCEP,
+  validateCNPJ,
+  validateCPF,
+  validateEmail,
+} from "../../utils/validators";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import HeaderMenu from "../../components/HeaderMenu";
@@ -294,6 +299,7 @@ const CreateSupplier: FC = () => {
                       <input
                         {...register("email", {
                           required: "Campo obrigatório",
+                          validate: validateEmail,
                         })}
                         type="email"
                         placeholder="nome@email.com"
@@ -395,6 +401,7 @@ const CreateSupplier: FC = () => {
                       <input
                         {...register("email", {
                           required: "Campo obrigatório",
+                          validate: validateEmail,
                         })}
                         type="email"
                         placeholder="nome@email.com"
