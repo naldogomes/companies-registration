@@ -32,6 +32,12 @@ export type Company = {
   suppliers: Array<Supplier>;
 };
 
+export type Options = {
+  id: number;
+  value: number;
+  label: string;
+};
+
 const defaultValues = {
   cnpj: "",
   fantasyName: "",
@@ -61,11 +67,20 @@ const CreateCompany: FC = () => {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [address, setAddress] = useState<Address | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [options, setOptions] = useState<Options[]>([]);
 
   const [companies, setCompanies] = useLocalStorage<Company[]>("companies", []);
 
   useEffect(() => {
-    setSuppliers(JSON.parse(localStorage.getItem("suppliers") || "[]"));
+    const sup = JSON.parse(localStorage.getItem("suppliers") || "[]");
+    const opt = sup?.map((supplier: Supplier) => ({
+      id: supplier.id,
+      value: supplier.id,
+      label: supplier.cnpj ? supplier.fantasyName : supplier.name,
+    }));
+
+    setSuppliers(sup);
+    setOptions(opt);
   }, []);
 
   const verifyCEP = async (cep: string) => {
@@ -74,12 +89,6 @@ const CreateCompany: FC = () => {
 
     return response;
   };
-
-  const options = suppliers?.map((supplier) => ({
-    id: supplier.id,
-    value: supplier.id,
-    label: supplier.cnpj ? supplier.fantasyName : supplier.name,
-  }));
 
   useEffect(() => {
     if (isEdit) {
@@ -90,6 +99,20 @@ const CreateCompany: FC = () => {
       verifyCEP(companyToEdit.cep);
     }
   }, []);
+
+  const getSelectedSuppliers = () => {
+    const defaultSuppliers: Options[] = [];
+    if (isEdit && companyToEdit?.suppliers?.length) {
+      companyToEdit?.suppliers.forEach((item: Supplier) => {
+        const defaultSupplier = options.find((opt) => item.id === opt.id);
+        if (defaultSupplier) {
+          defaultSuppliers.push(defaultSupplier);
+        }
+      });
+    }
+    console.log("defaultSuppliers", defaultSuppliers);
+    return defaultSuppliers;
+  };
 
   // useEffect(() => {
   //   setCompanies([]);
@@ -254,9 +277,11 @@ const CreateCompany: FC = () => {
                     render={({ field: { onChange, value, ref } }) => (
                       <Select
                         options={options}
+                        key={JSON.stringify(options)}
                         onChange={(val: any) => {
                           onChange(val);
                         }}
+                        defaultValue={getSelectedSuppliers()}
                         value={options.find((c: any) => c.value === value)}
                         components={{
                           Option: SelectOptions,
