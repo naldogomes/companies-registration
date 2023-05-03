@@ -169,7 +169,7 @@ const CreateSupplier: FC = () => {
             {!isEdit && (
               <RadioDiv>
                 <RadioDiv>
-                  <span>Pessoa jurídica</span>
+                  <span>Pessoa Jurídica</span>
                   <input
                     type="radio"
                     value="pj"
@@ -181,7 +181,7 @@ const CreateSupplier: FC = () => {
                   />
                 </RadioDiv>
                 <RadioDiv>
-                  <span>Pessoa física</span>
+                  <span>Pessoa Física</span>
                   <input
                     type="radio"
                     value="pf"
@@ -405,7 +405,7 @@ const CreateSupplier: FC = () => {
                       })}
                       maxLength={13}
                       type="text"
-                      placeholder="00.000.000-0"
+                      placeholder="Ex: 00.000.000-0"
                     />
                     {errors?.rg && (
                       <small className="error-message">

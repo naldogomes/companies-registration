@@ -4,6 +4,7 @@ import CreateCompany from "./pages/CreateCompany";
 import CreateSupplier from "./pages/CreateSupplier";
 import ListCompanies from "./pages/ListCompanies";
 import ListSuppliers from "./pages/ListSuppliers";
+import NotFoundPage from "./components/NotFound";
 
 function AppRouter() {
   return (
@@ -14,6 +15,7 @@ function AppRouter() {
         <Route path="/supplier-form" element={<CreateSupplier />} />
         <Route path="/companies-list" element={<ListCompanies />} />
         <Route path="/suppliers-list" element={<ListSuppliers />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
